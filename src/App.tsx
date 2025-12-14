@@ -1,8 +1,10 @@
-
+import { useState } from 'react';
 import './styles/main.css';
 import PricingCard from './components/PricingCard';
+import Toast from './components/Toast';
+import { PricingPlan } from './types';
 
-const pricingPlans = [
+const pricingPlans: PricingPlan[] = [
   {
     id: 'basic',
     name: '基础版',
@@ -45,6 +47,13 @@ const pricingPlans = [
 ];
 
 export default function App() {
+  const [showToast, setShowToast] = useState(false);
+
+  const handlePlanSelect = (planId: string) => {
+    // 显示轻提示
+    setShowToast(true);
+  };
+
   return (
     <div className="pricing-container">
       <h1 className="pricing-title">选择适合您的定价方案</h1>
@@ -53,9 +62,14 @@ export default function App() {
       </p>
       <div className="pricing-grid">
         {pricingPlans.map(plan => (
-          <PricingCard key={plan.id} plan={plan} />
+          <PricingCard key={plan.id} plan={plan} onSelect={handlePlanSelect} />
         ))}
       </div>
+      <Toast
+        message="功能正在开发中"
+        show={showToast}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 }

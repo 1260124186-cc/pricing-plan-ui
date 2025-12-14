@@ -1,17 +1,17 @@
-interface PricingPlan {
-  id: string;
-  name: string;
-  price: string;
-  description: string;
-  features: string[];
-  isPopular?: boolean;
-}
+import { PricingPlan } from '../types';
 
 interface PricingCardProps {
   plan: PricingPlan;
+  onSelect?: (planId: string) => void;
 }
 
-export default function PricingCard({ plan }: PricingCardProps) {
+export default function PricingCard({ plan, onSelect }: PricingCardProps) {
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(plan.id);
+    }
+  };
+
   return (
     <div className={`pricing-card ${plan.isPopular ? 'popular' : ''}`}>
       {plan.isPopular && <div className="popular-badge">最受欢迎</div>}
@@ -31,7 +31,9 @@ export default function PricingCard({ plan }: PricingCardProps) {
           </div>
         ))}
       </div>
-      <button className="cta-button">立即开始</button>
+      <button className="cta-button" onClick={handleClick}>
+        立即开始
+      </button>
     </div>
   );
 }
